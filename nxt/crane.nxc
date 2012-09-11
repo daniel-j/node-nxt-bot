@@ -1,0 +1,44 @@
+task updateMotors () {
+	
+	string buffer, message = "";
+	char result;
+	while (1) {
+		
+		// read mailbox
+		result = ReceiveMessage(0, true, buffer);
+		if (result == 0) {
+			message = buffer;
+			bool gotMotorMessage = true;
+
+			switch (message) {
+				case "TurnLeft": OnRev(OUT_B, 50); break;
+				case "TurnRight": OnFwd(OUT_B, 50); break;
+				case "TurnStop": Off(OUT_B); break;
+				
+				case "TiltUp":  OnFwd(OUT_C, 50); break;
+				case "TiltDown": OnRev(OUT_C, 50); break;
+				case "TiltStop": Off(OUT_C); break;
+
+				case "ClawIn":  OnFwd(OUT_A, 80); break;
+				case "ClawOut": OnRev(OUT_A, 80); break;
+				case "ClawStop": Off(OUT_A); break;
+
+				default: gotMotorMessage = false; break;
+			}
+
+			if (gotMotorMessage) {
+				TextOut(0, LCD_LINE3, "Motor: "+message+"       ");
+			}
+			
+		}
+		
+		Wait(50);
+
+	}
+}
+
+task main() {
+
+	Precedes(updateMotors);
+
+}

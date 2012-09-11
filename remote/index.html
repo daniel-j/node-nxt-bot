@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CraneTank remote</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fonts/liberation/stylesheet.css">
+    <link rel="stylesheet" href="css/style.css">
+
+	<style>
+	/*#remotetable {
+		border-spacing: 0px;
+		padding-left: 10px;
+	}
+	#remotetable button {
+		width: 100px;
+		height: 100px;
+		margin: 0px;
+		padding: 0px;
+		display: inline-block;
+		float: left;
+		
+	}
+	#remotetable button.holding {
+		outline: 2px solid orange;
+	}
+	#remotetable button.color {
+		border-radius: 100px;
+		border-width: 0px;
+		width: 90px;
+		height: 90px;
+		font-size: 30px;
+		font-weight: bold;
+		margin: 4px;
+	}
+	#remotetable button.color.red {
+		background: #900;
+		background: -webkit-gradient(radial, center center, 0, center center, 100, from(#900), to(black));
+		color: #F00;
+	}
+	#remotetable button.color.red:active, #remotetable button.color.red.holding {
+		background: #F00;
+		background: -webkit-gradient(radial, center center, 20, center center, 100, from(#F00), to(black));
+		box-shadow: 0px 0px 15px red;
+		outline: none;
+	}
+	#remotetable button.color.green {
+		background: #090;
+		background: -webkit-gradient(radial, center center, 0, center center, 100, from(#090), to(black));
+		color: #0F0;
+	}
+	#remotetable button.color.green:active, #remotetable button.color.green.holding {
+		background: #0F0;
+		background: -webkit-gradient(radial, center center, 20, center center, 100, from(#0F0), to(black));
+		box-shadow: 0px 0px 15px #0F0;
+		outline: none;
+	}
+	#remotetable button.color.blue {
+		background: #009;
+		background: -webkit-gradient(radial, center center, 0, center center, 100, from(#009), to(black));
+		color: #00F;
+	}
+	#remotetable button.color.blue:active, #remotetable button.color.blue.holding {
+		background: #00F;
+		background: -webkit-gradient(radial, center center, 20, center center, 100, from(#00F), to(black));
+		box-shadow: 0px 0px 15px #00F;
+		outline: none;
+	}
+	#remotetable canvas {
+		display: block;
+		margin-left: 10px;
+	}*/
+	</style>
+</head>
+<body>
+
+<!--<h1>CraneTank Remote</h1>
+<h2>Powered by Node.JS and the Raspberry Pi</h2>
+<img src="http://djazz.mine.nu:8081/" align=left width=320 height=240 border=5 style="background-color: #DDD;">
+<table id="remotetable" cellspaning=0 cellpadding=0 border=0>
+	<tr>
+		<td width=120><button id="btn_red" class="color red">R</button></td>
+		<td rowspan=3><canvas width=400 height=80 id="sensoroutput"></canvas><br>
+			Spin motor:<br>
+			<button id="btn_fwd_a">Counter-clockwise</button>
+			<button id="btn_rev_a">Clockwise</button>
+
+		</td>
+	</tr>
+	<tr>
+		<td><button id="btn_green" class="color green">G</button></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><button id="btn_blue" class="color blue">B</button></td>
+
+	</tr>
+</table>-->
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <h1>RasPiBot Control Center</h1>
+            </div>
+        </div>
+        <form action="" method="post">
+            <div class="row">
+                <div class="span8">
+                    <img src="http://djazz.mine.nu:8081/"
+                       align="left" border="5"
+                       style="background-color: #DDD;" class="video">
+                    
+                    <img src="http://i.imgur.com/WGXzz.jpg" style="width: 640px; height: 480px; margin-top: 5px;">
+                </div>
+                <div class="span8">
+                    <div class="row">
+                        <div class="span4">
+                            <div class="djazzArea">
+                                <h2>Movement</h2>
+                                <div id="movementArea">
+                                    <input type="button" id="btn_TankLeft" class="djazzButton" name="goleft" value="A">
+                                    <input type="button" id="btn_TankRight" class="djazzButton" name="goright" value="D">
+                                    <input type="button" id="btn_TankForward" class="djazzButton" name="goup" value="W">
+                                    <input type="button" id="btn_TankReverse" class="djazzButton" name="godown" value="S"></div>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <div class="djazzArea">
+                                <h2>Tilt</h2>
+                                <div id="tiltArea"></div>
+                                <input type="button" class="djazzButton" id="btn_TiltUp" value="UP">
+                                <input type="button" class="djazzButton" id="btn_TiltDown" value="DOWN"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4">
+                        <div class="djazzArea">
+                            <h2>Claw</h2>
+                            <div id="clawArea">
+                                <input type="button" class="djazzButton" value="Tighten" id="btn_ClawIn">
+                                <input type="button" class="djazzButton" value="Loosen" id="btn_ClawOut"></div>
+                        </div>
+                    </div>
+                    <div class="span4">
+                        <div class="djazzArea">
+                            <h2>Rotate Crane</h2>
+                            <div id="clawArea">
+                                <input type="button" id="btn_TurnLeft" class="djazzButton"  value="Left" disabled>
+                                <input type="button" id="btn_TurnRight" class="djazzButton" value="Right" disabled>
+                            </div>
+                            <canvas id="sensoroutput" width=320 height=120 style="margin-top: 20px; float: left; position: absolute; left: 650px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+<script>
+
+(function (global) {
+	'use strict';
+	
+	var socanvas = global.document.getElementById('sensoroutput');
+	var soc = socanvas.getContext('2d');
+	
+	var sensorvalues = {
+		'leftDistance': 0,
+		'rightDistance': 0,
+		'ambientLight': 1023,
+		'batteryLevelTank': 0,
+		'batteryLevelCrane': 0
+	};
+	
+	var updateSensorValues = function () {
+		soc.clearRect(0, 0, socanvas.width, socanvas.height);
+		soc.save();
+			soc.fillStyle = 'black';
+			soc.font = "13px sans-serif";
+			soc.fillText("Ambient light level:", 0, 11);
+			
+			soc.fillText("Battery level:", 160, 11);
+			soc.font = "bold 16px sans-serif";
+			soc.fillText(sensorvalues.batteryLevelTank+" V", 240 , 13);
+			soc.fillText(sensorvalues.batteryLevelCrane+" V", 240 , 60);
+			
+			soc.textAlign = "center";
+			
+			soc.globalAlpha = sensorvalues.ambientLight/1023;
+			soc.fillRect(1, 16, 149, 49);
+			soc.globalAlpha = 1.0;
+			soc.strokeRect(0.5, 15.5, 150, 50);
+			soc.fillStyle = "white";
+			soc.strokeStyle = "black";
+			soc.font = "bold 30px sans-serif";
+			soc.fillText(Math.round(100-(sensorvalues.ambientLight/1023)*100)+"%", 75.5, 50.5);
+			soc.strokeText(Math.round(100-(sensorvalues.ambientLight/1023)*100)+"%", 75.5, 50.5);
+			
+			soc.fillStyle = "#CCC";
+			soc.fillRect(160, 16, 9*15+4, 29);
+			soc.fillStyle = "#3F3";
+			soc.fillRect(162, 18, Math.min(sensorvalues.batteryLevelTank, 9)*15, 25);
+
+			soc.fillStyle = "#CCC";
+			soc.fillRect(160, 63, 9*15+4, 29);
+			soc.fillStyle = "#3F3";
+			soc.fillRect(162, 65, Math.min(sensorvalues.batteryLevelCrane, 9)*15, 25);
+			
+		soc.restore();
+	};
+	updateSensorValues();
+	
+	var actions = [
+	//	[ action, keycode, stop action, inbox id, robot id]
+		['TankForward', 	87, 'TankStop', 0, 0],
+		['TankReverse', 	83, 'TankStop', 0, 0],
+		['TankLeft', 		65, 'TankStop', 0, 0],
+		['TankRight', 		68, 'TankStop', 0, 0],
+
+		/*['TurnLeft', 	37, 'TurnStop', 0, 1],
+		['TurnRight', 	39, 'TurnStop', 0, 1],*/
+		['TiltUp', 		38, 'TiltStop', 0, 1],
+		['TiltDown', 	40, 'TiltStop', 0, 1],
+		['ClawIn', 		33, 'ClawStop', 0, 1],
+		['ClawOut', 	34, 'ClawStop', 0, 1]/*,
+
+		['red', 	82, 'off', 2, 0],
+		['green', 	71, 'off', 2, 0],
+		['blue', 	66, 'off', 2, 0]*/
+	];
+	
+	var buttons = [];
+	
+	var lastSent = "";
+	
+	var downListener = function (i) {
+		return function (e) {
+			actions[i].isHolding = true;
+			if(lastSent !== actions[i][0] && ws && ws.readyState === 1) {
+				ws.send(JSON.stringify([actions[i][3], actions[i][0], actions[i][4]]));
+				lastSent = actions[i][0];
+			}
+			e.preventDefault();
+		};
+	};
+	var upListener = function (i) {
+		return function () {
+			if(actions[i].isHolding) {
+				actions[i].isHolding = false;
+				if(lastSent !== actions[i][2] && ws && ws.readyState === 1) {
+					ws.send(JSON.stringify([actions[i][3], actions[i][2], actions[i][4]]));
+					lastSent = actions[i][2];
+				}
+			}
+		};
+	};
+	
+	var keyCodes = [];
+	
+	for(var i=0; i < actions.length; i+=1) {
+		buttons[i] = global.document.getElementById('btn_'+actions[i][0]);
+		buttons[i].addEventListener('mousedown', downListener(i), false);
+		window.addEventListener('mouseup', upListener(i), false);
+		keyCodes[i] = actions[i][1];
+		actions[i].isHolding = false;
+	}
+	
+	global.addEventListener('keydown', function (e) {
+		var kc = e.keyCode;
+		var i = keyCodes.indexOf(kc);
+		if(i > -1) {
+			actions[i].isHolding = true;
+			buttons[i].classList.add("holding");
+			if(lastSent !== actions[i][0] && ws && ws.readyState === 1) {
+				ws.send(JSON.stringify([actions[i][3], actions[i][0], actions[i][4]]));
+				lastSent = actions[i][0];
+			}
+			e.preventDefault();
+		}
+	}, false);
+	global.addEventListener('keyup', function (e) {
+		var kc = e.keyCode;
+		var i = keyCodes.indexOf(kc);
+		if(i > -1) {
+			if(actions[i].isHolding) {
+				actions[i].isHolding = false;
+				buttons[i].classList.remove("holding");
+				if(lastSent !== actions[i][2] && ws && ws.readyState === 1) {
+					ws.send(JSON.stringify([actions[i][3], actions[i][2], actions[i][4]]));
+					lastSent = actions[i][2];
+				}
+			}
+		}
+	}, false);
+	
+	if(!window.WebSocket) window.WebSocket = window.MozWebSocket;
+	
+	var ws = new WebSocket("ws://djazz.mine.nu:8082");
+	
+	ws.onopen = function () {
+		console.log("Connected");
+	};
+	ws.onmessage = function (e) {
+		var data = JSON.parse(e.data);
+		if(data.sensorvalues !== undefined) {
+			sensorvalues.ambientLight = 1023-parseInt(data.sensorvalues[0], 10);
+			updateSensorValues();
+		}
+		if(data.batterylevel !== undefined) {
+			
+			if(data.robotId === 0) {
+				sensorvalues.batteryLevelTank = data.batterylevel;
+			} else {
+				sensorvalues.batteryLevelCrane = data.batterylevel;
+			}
+			
+			updateSensorValues();
+		}
+		
+	};
+	ws.onclose = function () {
+		console.log("Disconnected");
+		alert("You got disconnected, reload page to reconnect");
+	};
+	ws.onerror = function (e) {
+		console.log("Socket error");
+	};
+	
+}(self));
+
+</script>
+</body>
+</html>

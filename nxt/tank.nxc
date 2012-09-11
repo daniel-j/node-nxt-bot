@@ -1,0 +1,90 @@
+
+task updateSensorValues () {
+	string message;
+	int light;
+
+	while (true) {
+		light = Sensor(IN_3);
+		message = NumToStr(light) +","+ NumToStr(SensorUS(IN_4)) +","+ NumToStr(SensorUS(IN_1));
+		
+		SendMessage(10, message);
+		
+		//TextOut(0, LCD_LINE3, message);
+		Wait(100);
+	}
+}
+
+task updateMotors () {
+	
+	string buffer, message = "";
+	char result;
+	while (1) {
+		
+		// read mailbox
+		result = ReceiveMessage(0, true, buffer);
+		if (result == 0) {
+			message = buffer;
+			bool gotMotorMessage = true;
+
+			switch (message) {
+				case "TankForward": OnRev(OUT_BC, 70); break;
+				case "TankReverse": OnFwd(OUT_BC, 70); break;
+				
+				case "TankLeft":  OnFwd(OUT_C, 100); OnRev(OUT_B, 100); break;
+				case "TankRight": OnFwd(OUT_B, 100); OnRev(OUT_C, 100); break;
+
+				case "TankStop": Off(OUT_BC); break;
+
+				default: gotMotorMessage = false; break;
+			}
+
+			if (gotMotorMessage) {
+				TextOut(0, LCD_LINE3, "Motor: "+message+"       ");
+			}
+			
+		}
+		
+		Wait(50);
+
+	}
+}
+
+task updateColor () {
+	
+	string buffer, message = "";
+	char result;
+
+	while (1) {
+		
+
+		// read mailbox
+		result = ReceiveMessage(2, true, buffer);
+		if (result == 0) {
+			message = buffer;
+
+			switch (message) {
+				case "red": SetSensorType(IN_2, SENSOR_TYPE_COLORRED); break;
+				case "green": SetSensorType(IN_2, SENSOR_TYPE_COLORGREEN); break;
+				case "blue": SetSensorType(IN_2, SENSOR_TYPE_COLORBLUE); break;
+				case "off": SetSensorType(IN_2, SENSOR_TYPE_COLORNONE); break;
+			}
+
+			
+			TextOut(0, LCD_LINE4, "Color: "+message+"       ");
+		}
+		
+		Wait(50);
+
+	}
+}
+
+task main() {
+
+	SetSensorLowspeed(IN_1);
+	SetSensorType(IN_2, SENSOR_TYPE_COLORNONE);
+	SetSensorType(IN_3, SENSOR_TYPE_LIGHT_INACTIVE);
+	SetSensorLowspeed(IN_4);
+	
+
+	Precedes(updateSensorValues, updateMotors, updateColor);
+}

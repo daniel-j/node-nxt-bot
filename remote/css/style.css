@@ -1,0 +1,60 @@
+.container {
+    margin: 0px;
+    width: 1300px;
+}
+
+#movementArea {
+    position: relative;
+    margin-top: 10px;
+}
+
+.djazzButton {
+    font-family: "LiberationMonoBold";
+    font-size: 2.4em;
+    padding: 0.4em 0.5em;
+}
+.djazzButton.holding, .djazzButton:active {
+    outline: 5px solid orange;
+}
+
+#btn_TankForward {
+    top: -0.1em;
+    left: 1.7em;
+    position: absolute;
+}
+
+#btn_TankReverse {
+    top: 1.4em;
+    left: 1.7em;
+    position: absolute;
+}
+
+#btn_TankLeft {
+    top: 1.4em;
+    position: absolute;
+}
+
+#btn_TankRight {
+    top: 1.4em;
+    left: 3.4em;
+    position: absolute;
+}
+
+#btn_TiltUp, #btn_TiltDown {
+    display: block;
+    width: 6em;
+}
+
+#btn_TurnLeft, #btn_TurnRight, #btn_ClawIn, #btn_ClawOut {
+    display: block;
+    width: 6em;
+}
+
+img.video {
+
+    min-width: 640px !important;
+    height: 480px;
+}
+div {
+    outline: 0px solid red;
+}
