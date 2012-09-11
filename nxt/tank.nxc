@@ -27,11 +27,11 @@ task updateMotors () {
 			bool gotMotorMessage = true;
 
 			switch (message) {
-				case "TankForward": OnRev(OUT_BC, 70); break;
-				case "TankReverse": OnFwd(OUT_BC, 70); break;
+				case "TankForward": OnRev(OUT_BC, 60); break;
+				case "TankReverse": OnFwd(OUT_BC, 60); break;
 				
-				case "TankLeft":  OnFwd(OUT_C, 100); OnRev(OUT_B, 100); break;
-				case "TankRight": OnFwd(OUT_B, 100); OnRev(OUT_C, 100); break;
+				case "TankLeft":  OnFwd(OUT_C, 70); OnRev(OUT_B, 70); break;
+				case "TankRight": OnFwd(OUT_B, 70); OnRev(OUT_C, 70); break;
 
 				case "TankStop": Off(OUT_BC); break;
 
@@ -63,10 +63,11 @@ task updateColor () {
 			message = buffer;
 
 			switch (message) {
-				case "red": SetSensorType(IN_2, SENSOR_TYPE_COLORRED); break;
-				case "green": SetSensorType(IN_2, SENSOR_TYPE_COLORGREEN); break;
-				case "blue": SetSensorType(IN_2, SENSOR_TYPE_COLORBLUE); break;
-				case "off": SetSensorType(IN_2, SENSOR_TYPE_COLORNONE); break;
+				case "ColorRed": SetSensorType(IN_2, SENSOR_TYPE_COLORRED); break;
+				case "ColorGreen": SetSensorType(IN_2, SENSOR_TYPE_COLORGREEN); break;
+				case "ColorBlue": SetSensorType(IN_2, SENSOR_TYPE_COLORBLUE); break;
+				case "ColorFull": SetSensorType(IN_2, SENSOR_TYPE_COLORFULL); break;
+				case "ColorNone": SetSensorType(IN_2, SENSOR_TYPE_COLORNONE); break;
 			}
 
 			

@@ -1,4 +1,141 @@
-.container {
+
+
+header h1 {
+    margin: 0px;
+}
+
+#remotetable {
+    border-spacing: 0px;
+}
+#remotetable h3 {
+    margin: 5px;
+    margin-top: 0px;
+    font-size: 24px;
+}
+#remotetable button.control {
+    width: 70px;
+    height: 70px;
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+    float: left;
+    font-size: 36px;
+    font-weight: bold;
+    position: relative;
+    outline: 0px solid black;
+    -webkit-transition: outline .1s ease-in-out, z-index .1s ease-in-out;
+
+}
+#remotetable button.control.span3 {
+    width: 210px;
+}
+#remotetable button.control.span1point5 {
+    width: 105px;
+}
+#remotetable button.control.active {
+    outline-width: 5px;
+    z-index: 1;
+}
+#remotetable button.color {
+    border-radius: 100px;
+    border-width: 0px;
+    width: 90px;
+    height: 90px;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 4px;
+}
+#remotetable button.color.red {
+    background: #900;
+    background: -webkit-gradient(radial, center center, 0, center center, 100, from(#900), to(black));
+    color: #F00;
+}
+#remotetable button.color.red:active, #remotetable button.color.red.holding {
+    background: #F00;
+    background: -webkit-gradient(radial, center center, 20, center center, 100, from(#F00), to(black));
+    box-shadow: 0px 0px 15px red;
+    outline: none;
+}
+#remotetable button.color.green {
+    background: #090;
+    background: -webkit-gradient(radial, center center, 0, center center, 100, from(#090), to(black));
+    color: #0F0;
+}
+#remotetable button.color.green:active, #remotetable button.color.green.holding {
+    background: #0F0;
+    background: -webkit-gradient(radial, center center, 20, center center, 100, from(#0F0), to(black));
+    box-shadow: 0px 0px 15px #0F0;
+    outline: none;
+}
+#remotetable button.color.blue {
+    background: #009;
+    background: -webkit-gradient(radial, center center, 0, center center, 100, from(#009), to(black));
+    color: #00F;
+}
+#remotetable button.color.blue:active, #remotetable button.color.blue.holding {
+    background: #00F;
+    background: -webkit-gradient(radial, center center, 20, center center, 100, from(#00F), to(black));
+    box-shadow: 0px 0px 15px #00F;
+    outline: none;
+}
+#remotetable canvas {
+    display: block;
+    margin-left: 10px;
+}
+
+img#webcam {
+    float: left;
+    background-color: #DDD;
+    margin-right: 5px;
+}
+#sensoroutput {
+    margin-top: 5px;
+}
+
+#chatbox {
+    display: inline-block;
+    border: 1px solid #000;
+    width: 345px;
+    height: 175px;
+    
+    position: absolute;
+    margin-top: 3px;
+}
+#chatbox #messages {
+    overflow: auto;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 27px;
+    font-family: Verdana;
+    font-size: 11px;
+    padding: 3px;
+}
+#chatbox #messages .log {
+    color: #AAA;
+    font-style: italic;
+}
+#chatbox #chatInput {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    display: block;
+    border: none;
+    border-top: 1px solid #999;
+    padding: 3px;
+    padding-left: 5px;
+    margin: 0px;
+    height: 20px;
+}
+
+
+
+
+
+
+/*.container {
     margin: 0px;
     width: 1300px;
 }
@@ -12,9 +149,13 @@
     font-family: "LiberationMonoBold";
     font-size: 2.4em;
     padding: 0.4em 0.5em;
+    position: relative;
+    outline: 0px solid orange;
+    -webkit-transition: outline .2s ease-in-out, z-index .1s ease-in-out;
 }
 .djazzButton.holding, .djazzButton:active {
-    outline: 5px solid orange;
+    outline: 8px solid rgba(255, 128, 0, 0.5);
+    z-index: 1;
 }
 
 #btn_TankForward {
@@ -57,4 +198,4 @@ img.video {
 }
 div {
     outline: 0px solid red;
-}
+}*/

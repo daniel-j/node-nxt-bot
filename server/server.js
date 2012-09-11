@@ -138,26 +138,42 @@ wss.on('connection', function (ws) {
 	
 	var remoteAddress = ws._socket.remoteAddress;
 	console.log(remoteAddress+" joined");
+	var ipSum = remoteAddress.split('.');
+
+	var color = ((+ipSum[0]) + (+ipSum[1]) + (+ipSum[2]) + (+ipSum[3])) % 360;
 	sockets.push(ws);
 
 	ws.on('message', function (message) {
+
 		var data = JSON.parse(message);
-		
-		var inbox = data[0];
-		var action = data[1];
-		var robotId = data[2];
-		if (action !== lastSentAction) {
-			lastSentAction = action;
-			var robot = robotId === 0 ? tank : crane;
-			robot.message_write(inbox, new Buffer(action));
-			console.log(remoteAddress, action, robotId);
+
+		if (typeof data === 'string') { // Chat
+			console.log(remoteAddress, data);
+			broadcast(JSON.stringify({
+				chat: data,
+				color: color
+			}));
+		} else { // Command to robot
+			var inbox = data[0];
+			var action = data[1];
+			var robotId = data[2];
+			if (action !== lastSentAction) {
+				lastSentAction = action;
+				var robot = robotId === 0 ? tank : crane;
+				robot.message_write(inbox, new Buffer(action));
+				console.log(remoteAddress, action, robotId);
+				broadcast(JSON.stringify({
+					action: action,
+					color: color
+				}));
+			}
 		}
-		
 		
 	});
 
 	ws.on('close', function (reasonCode, reasonText) {
 		tank.message_write(0, new Buffer("TankStop"));
+		tank.message_write(2, new Buffer("ColorNone"));
 		crane.message_write(0, new Buffer("TurnStop"));
 		crane.message_write(0, new Buffer("TiltStop"));
 		crane.message_write(0, new Buffer("ClawStop"));
@@ -166,6 +182,14 @@ wss.on('connection', function (ws) {
 		var index = sockets.indexOf(ws);
 
 		sockets.splice(index, 1);
+		var actions = ['TankStop', 'TurnStop', 'TiltStop', 'ClawStop', 'ColorNone'];
+		for (var i = 0; i < actions.length; i++) {
+			broadcast(JSON.stringify({
+				action: actions[i],
+				color: color
+			}));
+		}
+		
 	});
 
 	ws.on('error', function () {
